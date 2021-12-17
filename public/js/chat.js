@@ -104,5 +104,27 @@ $(() => {
         return (data.user.token == user.token)
     }
 
+    createIcons()
+    createStamps()
+    loginArea.hide()
+    chatArea.hide()
+    stampList.hide()
+    loginArea.fadeIn(FADE_TIME)
+
+    let socket = io.connect(url)
+    //ログイン処理
+    $('#login').on('click',() =>{
+        let name = inputName.val()
+        let icon = $('input[name=icon]:checked').val()
+        if(name && icon){
+            loginArea.hide()
+            chatArea.fadeIn(FADE_TIME)
+        }
+    })
+    //ログアウト処理
+    $('#logout').on('click',()=>{
+        chatArea.hide()
+        loginArea.fadeIn(FADE_TIME)
+    })
 
 })
