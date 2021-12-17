@@ -119,6 +119,11 @@ $(() => {
         if(name && icon){
             loginArea.hide()
             chatArea.fadeIn(FADE_TIME)
+            socket.emit('auth',{
+                //サーバに送信
+                name: name,
+                icon: icon,
+            })
         }
     })
     //ログアウト処理
