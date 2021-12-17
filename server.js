@@ -20,6 +20,24 @@ app.get('/',(req,res) => {
 })
 
 io.on('connection',(socket) => {
+    socket.on('auth',(user) =>{
+        //トークンがあれば処理内
+        if(user.token) return
+        //トークン発行
+        user.token = uuidv4()
+        //ユーザリスト追加
+        users[socket.id] = user
+        //data の作成
+        let data = {
+            user: user,
+            users: users,
+        }
+        console.log(data)
+        //本人にデータを返す
+        socket.emit('logined',data)
+        //本人以外すべてにデータを返す
+        socket.broadcast.emit('user_joined',data)
+    })
     //クライアントからデータ受信
     socket.on('message',(data) => {
         console.log(data)
