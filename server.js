@@ -41,8 +41,35 @@ io.on('connection',(socket) => {
     //クライアントからデータ受信
     socket.on('message',(data) => {
         console.log(data)
+        data.datetime = Date.now()
         //すべてのクライアントにデータ送信
         io.emit('message',data)
+    })
+    
+    socket.on('upload_stamp',(data) => {
+        data.datetime = Date.now()
+        console.log(data)
+        io.emit('load_stamp',data)
+    })
+
+    const logout = (socket) => {
+        //ユーザ一覧からIDでユーザ取得
+        const user = users[socket.id]
+        //ユーザ一覧から削除
+        delete users[socket.id]
+        //ログアウトユーザ以外に通知
+        socket.broadcast.emit('user_left', {
+            user: user,
+            users: users,
+        })
+    }
+
+    socket.on('logout',() => {
+        logout(socket)
+    })
+    socket.on('disconnect',() => {
+        console.log('disconnect')
+        logout(socket)
     })
 })
 
