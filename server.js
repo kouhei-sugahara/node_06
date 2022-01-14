@@ -45,11 +45,17 @@ io.on('connection',(socket) => {
         //すべてのクライアントにデータ送信
         io.emit('message',data)
     })
-    
+
     socket.on('upload_stamp',(data) => {
         data.datetime = Date.now()
         console.log(data)
         io.emit('load_stamp',data)
+    })
+    //画像受信
+    socket.on('upload_image',(data) => {
+        data.datetime = Date.now()
+        console.log(data)
+        io.emit('load_image',data)
     })
 
     const logout = (socket) => {

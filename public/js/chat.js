@@ -196,5 +196,25 @@ $(() => {
     socket.on('load_stamp',(data) => {
         createChatImage(data, {width: STAMP_WIDTH})
     })
+    //画像アップロード
+    $('.uploadImage').on('change', (event) => {
+        let file = event.target.files[0]
+        let fileRender = new FileReader()
+        fileRender.readAsDataURL(file)
+
+        fileRender.onloadend = () => {
+            const data = {
+                image: fileRender.result,
+                user: user,
+            }
+            socket.emit('upload_image',data)
+            $('.uploadImage').val() = ''
+        }
+    })
+
+    //画像受信
+    socket.on('load_image',(data) => {
+        createChatImage(data, {width: IMAGE_WIDTH})
+    })
 
 })
